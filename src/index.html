@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refloow Photo Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./src/assets/fonts/fonts.css">
+  <link rel="stylesheet" href="./node_modules/cropperjs/dist/cropper.css">
+</head>
+<body>
+  <div id="custom-title-bar">
+    <div class="title-buttons" style="-webkit-app-region: no-drag;">
+      <img src="./img/refloow-photo-studio-logo.png" alt="Refloow" class="title-icon" />
+      <span class="title-brand">Refloow Photo Studio</span>
+      <nav class="mode-tabs" role="tablist">
+        <button type="button" class="mode-tab active" data-mode="edit" role="tab">Edit</button>
+        <button type="button" class="mode-tab" data-mode="background" role="tab">Background</button>
+        <button type="button" class="mode-tab" data-mode="batch" role="tab">Batch</button>
+      </nav>
+    </div>
+    <div class="title-drag-area" style="-webkit-app-region: drag;"></div>
+    <div class="title-actions" style="-webkit-app-region: no-drag;">
+      <button id="discordBtn" class="title-btn" type="button">Support</button>
+      <button id="donationBtn" class="title-btn" type="button">Donations</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast-hidden">Address copied to clipboard!</div>
+
+  <div id="supportModal" class="modal">
+    <div class="modal-content">
+      <span id="closeSupportBtn" class="close-btn">&times;</span>
+      <h2>Support &amp; Information</h2>
+      <div class="modal-section">
+        <h3>Official Links</h3>
+        <ul>
+          <li><a href="https://refloow.com" target="_blank">Website (refloow.com)</a></li>
+          <li><a href="https://discord.com/invite/D8WCtDD" target="_blank">Discord Support Server</a></li>
+          <li><a href="https://linktr.ee/Refloow" target="_blank">Linktree (all socials)</a></li>
+        </ul>
+      </div>
+      <div class="modal-section modal-section-actions">
+        <button id="openDonationsFromSupportBtn" class="btn-modal-primary" type="button">Support Development</button>
+        <button id="openCreditsBtn" class="btn-modal-secondary" type="button">Open Source Credits</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="creditsModal" class="modal">
+    <div class="modal-content">
+      <span id="closeCreditsBtn" class="close-btn">&times;</span>
+      <h2>Open Source Credits</h2>
+      <div class="modal-section">
+        <p class="modal-lead">Built on open tools. Credits to the maintainers:</p>
+        <ul>
+          <li><a href="https://www.electronjs.org/" target="_blank">Electron</a> — desktop framework</li>
+          <li><a href="https://github.com/fengyuanchen/cropperjs" target="_blank">Cropper.js</a> — cropping</li>
+          <li><a href="https://onnxruntime.ai/" target="_blank">ONNX Runtime Web</a> — ML inference</li>
+          <li><a href="https://huggingface.co/BritishWerewolf/U-2-Netp" target="_blank">U-2-Netp</a> — background removal</li>
+          <li><a href="https://www.electron.build/" target="_blank">Electron Builder</a> — packaging</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="donationModal" class="modal">
+    <div class="modal-content modal-wide">
+      <span class="close-donation-btn close-btn">&times;</span>
+      <h2>Support Development</h2>
+      <p class="modal-lead">If this tool helps your catalog work, consider supporting future updates.</p>
+      <div class="crypto-row">
+        <span class="crypto-label">Bitcoin (BTC)</span>
+        <input type="text" class="crypto-input" value="bc1qay2l04mmqhztq8mj7usjlff22ay6a37x9pl9uk" readonly onclick="copyToClipboard(this)" />
+      </div>
+      <div class="crypto-row">
+        <span class="crypto-label">Ethereum / Polygon / Arbitrum</span>
+        <input type="text" class="crypto-input" value="0xFD531dc8e3E78C57212F303f684f5A2aD312f7ca" readonly onclick="copyToClipboard(this)" />
+      </div>
+      <div class="crypto-row">
+        <span class="crypto-label">Solana (SOL)</span>
+        <input type="text" class="crypto-input" value="8LFVByQUKJVGnBBoAso9KqCbUnFtm875gMkumMRNnEZ2" readonly onclick="copyToClipboard(this)" />
+      </div>
+      <div class="crypto-row">
+        <span class="crypto-label">Tron (TRX)</span>
+        <input type="text" class="crypto-input" value="TMEeyojQaC6HXBww7FGQKkF1ZcDeUr3esW" readonly onclick="copyToClipboard(this)" />
+      </div>
+      <div class="crypto-row">
+        <span class="crypto-label">Kaspa (KAS)</span>
+        <input type="text" class="crypto-input" value="kaspa:qrzd6vvd9h32cxr776l5vx3q94uyyp9wp7fjs36qjx3hltldxz0kwh9qy9hak" readonly onclick="copyToClipboard(this)" />
+      </div>
+      <div class="crypto-row">
+        <span class="crypto-label">Monero (XMR)</span>
+        <input type="text" class="crypto-input" value="46Aff9taPnbDqdkbSJ8rAzWqAyuKugt3b87irbcUcbLiSkgPff1YFRW3SRoLJtaA4sQhFTbdy7VFa97LpN4yhXRp3vz9vnj" readonly onclick="copyToClipboard(this)" />
+      </div>
+      <div class="crypto-row">
+        <span class="crypto-label">Litecoin (LTC)</span>
+        <input type="text" class="crypto-input" value="ltc1qvrhhgvyhl7f08r9pmchnzzfhgffuzwzqfpr3hm" readonly onclick="copyToClipboard(this)" />
+      </div>
+      <div class="crypto-row">
+        <span class="crypto-label">Bitcoin Cash (BCH)</span>
+        <input type="text" class="crypto-input" value="qqe99z466a8wdknxvxkcw60p72ddhkg2lvfuh9jqzz" readonly onclick="copyToClipboard(this)" />
+      </div>
+    </div>
+  </div>
+
+  <div class="app-container">
+    <aside class="sidebar left-rail">
+      <div class="rail-brand">
+        <p class="rail-kicker">Catalog desk</p>
+        <h1 class="rail-title">Product tools</h1>
+      </div>
+
+      <div class="tool-group" data-panel="edit">
+        <button id="btn-upload" type="button">Upload photo</button>
+        <h3>Adjust</h3>
+        <button id="btn-crop" class="tool-btn" type="button">Crop</button>
+        <button id="btn-mirror" class="tool-btn" type="button">Mirror</button>
+        <button id="btn-remove-bg" class="tool-btn" type="button">Remove BG</button>
+        <button id="btn-add-text" class="tool-btn" type="button">Add text</button>
+
+        <div id="text-action-container" class="text-panel" style="display: none;">
+          <input type="text" id="text-input" placeholder="Type text…">
+          <div class="text-row">
+            <select id="text-font"></select>
+            <input type="color" id="text-color" value="#1A1D21">
+          </div>
+          <div class="text-row">
+            <button id="btn-apply-text" class="primary" type="button">Add</button>
+            <button id="btn-cancel-text" class="ghost" type="button">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-group" data-panel="background" style="display: none;">
+        <h3>Backgrounds</h3>
+        <p class="hint">Pick a studio plate, then apply or run Catalog Ready.</p>
+        <button id="btn-bg-custom" class="tool-btn" type="button">Upload custom BG</button>
+        <input type="file" id="bg-custom-input" accept="image/png,image/jpeg,image/webp" hidden>
+        <button id="btn-apply-bg" class="tool-btn" type="button">Apply to photo</button>
+      </div>
+
+      <div class="tool-group" data-panel="batch" style="display: none;">
+        <h3>Batch folders</h3>
+        <p class="hint">Same background + preset for every file.</p>
+        <button id="btn-batch-input" class="tool-btn" type="button">Input folder</button>
+        <p id="batch-input-path" class="path-display">No input selected</p>
+        <button id="btn-batch-output" class="tool-btn" type="button">Output folder</button>
+        <p id="batch-output-path" class="path-display">No output selected</p>
+        <div class="batch-actions">
+          <button id="btn-batch-start" class="primary" type="button">Start batch</button>
+          <button id="btn-batch-pause" class="tool-btn" type="button" disabled>Pause</button>
+          <button id="btn-batch-cancel" class="ghost" type="button" disabled>Cancel</button>
+        </div>
+      </div>
+
+      <div class="tool-group bottom catalog-actions">
+        <button id="btn-catalog-ready" class="primary accent-warm" type="button">Catalog Ready</button>
+        <button id="btn-export" class="primary" type="button">Export</button>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <div id="top-adjustments-bar" style="display: none;">
+        <div class="slider-group">
+          <div class="slider-header">
+            <label>Contrast</label>
+            <span id="val-contrast" class="slider-value">100</span>
+          </div>
+          <input type="range" id="slide-contrast" min="0" max="200" value="100">
+        </div>
+        <div class="slider-group">
+          <div class="slider-header">
+            <label>Saturation</label>
+            <span id="val-saturate" class="slider-value">100</span>
+          </div>
+          <input type="range" id="slide-saturate" min="0" max="200" value="100">
+        </div>
+        <div class="slider-group">
+          <div class="slider-header">
+            <label>Brightness</label>
+            <span id="val-brightness" class="slider-value">100</span>
+          </div>
+          <input type="range" id="slide-brightness" min="0" max="200" value="100">
+        </div>
+        <div class="slider-group">
+          <div class="slider-header">
+            <label>Warmth</label>
+            <span id="val-warmth" class="slider-value">0</span>
+          </div>
+          <input type="range" id="slide-warmth" min="-100" max="100" value="0">
+        </div>
+      </div>
+
+      <div class="stage-shell" id="stage-edit">
+        <div class="view-toolbar" id="view-toolbar">
+          <button type="button" id="btn-zoom-out" class="view-btn" title="Zoom out (Ctrl+-)">−</button>
+          <span id="zoom-level-label" class="zoom-level">100%</span>
+          <button type="button" id="btn-zoom-in" class="view-btn" title="Zoom in (Ctrl+)">+</button>
+          <button type="button" id="btn-zoom-fit" class="view-btn view-btn-label" title="Fit (Ctrl+1)">Fit</button>
+          <button type="button" id="btn-zoom-reset" class="view-btn view-btn-label" title="Reset (Ctrl+0)">100%</button>
+          <span class="view-hint">Select object to transform · Drag empty area to pan · Wheel zoom</span>
+        </div>
+        <div class="canvas-container" id="drop-zone">
+          <div id="empty-state" class="empty-state">
+            <p class="empty-title">Drop a product photo</p>
+            <p class="empty-sub">Upload or drag &amp; drop — then Catalog Ready for shop backgrounds</p>
+          </div>
+          <p id="placeholder-text" hidden>Click Upload or Drag &amp; Drop here</p>
+
+          <div id="image-wrapper">
+            <img id="editor-image" alt="Editor" style="display: none;">
+            <div id="composition-stage" class="composition-stage" aria-label="Composition stage"></div>
+            <div id="layers-container" style="display: none;"></div>
+          </div>
+
+          <div id="drag-overlays" style="display: none;">
+            <div id="main-drop-overlay" class="drop-overlay blue-zone">
+              <h2>Replace base image</h2>
+            </div>
+            <div id="layer-drop-overlay" class="drop-overlay gold-zone">
+              <h2>Drop as layer</h2>
+            </div>
+          </div>
+        </div>
+
+        <div id="filter-dock" style="display: none;">
+          <div class="filter-track-container">
+            <button id="scroll-left" class="scroll-btn" type="button">&lt;</button>
+            <div id="filter-track"></div>
+            <button id="scroll-right" class="scroll-btn" type="button">&gt;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-shell" id="stage-batch" style="display: none;">
+        <div class="batch-stage">
+          <header class="batch-header">
+            <h2>Batch queue</h2>
+            <p id="batch-status" class="batch-status">Select folders to begin</p>
+          </header>
+          <div class="batch-progress">
+            <div class="batch-progress-track">
+              <div id="batch-progress-fill" class="batch-progress-fill"></div>
+            </div>
+            <span id="batch-progress-label">0 / 0</span>
+          </div>
+          <div id="batch-queue" class="batch-queue"></div>
+        </div>
+      </div>
+
+      <input type="file" id="file-input" accept="image/png, image/jpeg, image/webp" hidden>
+    </main>
+
+    <aside class="sidebar inspector" id="inspector-panel">
+      <h2 class="inspector-title">Inspector</h2>
+
+      <section class="inspector-section">
+        <h3>Objects</h3>
+        <div id="objects-list" class="objects-list"></div>
+        <p id="objects-empty-hint" class="hint">Upload a photo to create Background + Product objects.</p>
+        <p class="hint shortcuts-hint">Ctrl+Z / Y · Ctrl+C / X / V · Delete · Ctrl+D duplicate · Arrows nudge</p>
+      </section>
+
+      <section class="inspector-section" id="object-props" style="display: none;">
+        <h3>Selected <span id="prop-type-badge" class="type-badge">object</span></h3>
+        <label class="prop-label">Name</label>
+        <input type="text" id="prop-name" class="prop-input">
+        <div class="prop-grid">
+          <label>X <input type="number" id="prop-x" class="prop-input"></label>
+          <label>Y <input type="number" id="prop-y" class="prop-input"></label>
+          <label>W <input type="number" id="prop-w" class="prop-input"></label>
+          <label>H <input type="number" id="prop-h" class="prop-input"></label>
+          <label>Rot° <input type="number" id="prop-rot" class="prop-input"></label>
+        </div>
+        <div class="slider-group compact">
+          <div class="slider-header">
+            <label>Opacity</label>
+            <span id="prop-opacity-val" class="slider-value">100%</span>
+          </div>
+          <input type="range" id="prop-opacity" min="0" max="100" value="100">
+        </div>
+        <div class="prop-actions">
+          <button type="button" id="btn-flip-h" class="tool-btn">Flip H</button>
+          <button type="button" id="btn-flip-v" class="tool-btn">Flip V</button>
+          <button type="button" id="btn-duplicate-object" class="tool-btn">Duplicate</button>
+          <button type="button" id="btn-reset-transform" class="tool-btn">Reset pose</button>
+        </div>
+        <div id="product-object-actions" class="prop-actions" style="display: none;">
+          <button type="button" id="btn-product-remove-bg" class="tool-btn">Re-run Remove BG</button>
+        </div>
+        <button type="button" id="btn-bake-flatten" class="ghost">Bake / Flatten stack</button>
+      </section>
+      <p id="object-props-empty" class="hint">Select Background, Product, or an overlay to transform it.</p>
+
+      <section class="inspector-section">
+        <h3>Catalog preset</h3>
+        <select id="preset-select" class="inspector-select"></select>
+        <div class="slider-group compact">
+          <div class="slider-header">
+            <label>Padding</label>
+            <span id="val-padding" class="slider-value">8%</span>
+          </div>
+          <input type="range" id="slide-padding" min="0" max="25" value="8">
+        </div>
+        <label class="toggle-row">
+          <input type="checkbox" id="toggle-shadow">
+          <span>Soft product shadow</span>
+        </label>
+      </section>
+
+      <section class="inspector-section">
+        <h3>Background</h3>
+        <div id="bg-grid" class="bg-grid"></div>
+      </section>
+
+      <section class="inspector-section" id="layers-panel" style="display: none;">
+        <h3>Legacy layers</h3>
+        <ul id="layer-list" class="layer-list"></ul>
+      </section>
+    </aside>
+  </div>
+
+  <div id="working-overlay" class="working-overlay" style="display: none;">
+    <div class="working-card">
+      <div class="working-spinner"></div>
+      <p id="working-label">Working…</p>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const supportModal = document.getElementById('supportModal');
+      const donationModal = document.getElementById('donationModal');
+      const creditsModal = document.getElementById('creditsModal');
+
+      document.getElementById('discordBtn').onclick = () => { supportModal.style.display = 'block'; };
+      document.getElementById('donationBtn').onclick = () => { donationModal.style.display = 'block'; };
+      document.getElementById('openCreditsBtn').onclick = () => {
+        supportModal.style.display = 'none';
+        creditsModal.style.display = 'block';
+      };
+      document.getElementById('openDonationsFromSupportBtn').onclick = () => {
+        supportModal.style.display = 'none';
+        donationModal.style.display = 'block';
+      };
+      document.getElementById('closeSupportBtn').onclick = () => { supportModal.style.display = 'none'; };
+      document.getElementById('closeCreditsBtn').onclick = () => { creditsModal.style.display = 'none'; };
+      document.querySelector('.close-donation-btn').onclick = () => { donationModal.style.display = 'none'; };
+
+      window.addEventListener('click', (event) => {
+        if (event.target === supportModal) supportModal.style.display = 'none';
+        if (event.target === donationModal) donationModal.style.display = 'none';
+        if (event.target === creditsModal) creditsModal.style.display = 'none';
+      });
+    });
+
+    let toastTimeout;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    function copyToClipboard(inputElement) {
+      inputElement.select();
+      navigator.clipboard.writeText(inputElement.value).then(() => {
+        showToast('Address copied to clipboard!');
+      }).catch((err) => console.error('Failed to copy text: ', err));
+    }
+  </script>
+</body>
+</html>

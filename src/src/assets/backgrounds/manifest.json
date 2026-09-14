@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "templates": [
+    { "id": "pure-white", "label": "Pure White", "category": "solid" },
+    { "id": "soft-gray", "label": "Soft Gray", "category": "solid" },
+    { "id": "charcoal", "label": "Charcoal", "category": "solid" },
+    { "id": "brand-amber", "label": "Brand Amber", "category": "solid" },
+    { "id": "softbox-white", "label": "Softbox White", "category": "gradient" },
+    { "id": "cool-studio", "label": "Cool Studio", "category": "gradient" },
+    { "id": "warm-floor", "label": "Warm Floor Fade", "category": "gradient" },
+    { "id": "lifestyle-mist", "label": "Lifestyle Mist", "category": "lifestyle" },
+    { "id": "lifestyle-linen", "label": "Lifestyle Linen", "category": "lifestyle" },
+    { "id": "lifestyle-slate", "label": "Lifestyle Slate", "category": "lifestyle" },
+    { "id": "lifestyle-blush", "label": "Lifestyle Blush", "category": "lifestyle" },
+    { "id": "lifestyle-sage", "label": "Lifestyle Sage", "category": "lifestyle" }
+  ]
+}
