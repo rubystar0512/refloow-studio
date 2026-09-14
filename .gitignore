@@ -2,9 +2,11 @@
 node_modules/
 **/node_modules/
 
-# Electron build output
+# Electron build output (keep split installer parts under dist/windows/)
 src/release/
-dist/
+dist/*
+!dist/windows/
+!dist/windows/**
 out/
 *.exe
 *.blockmap
